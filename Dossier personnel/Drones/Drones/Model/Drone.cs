@@ -10,6 +10,8 @@ namespace Drones
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _targetX;
+        private int _targetY;
 
         public int Charge { get => _charge; private set => _charge = value; }
         public string Name { get => _name; private set => _name = value; }
@@ -20,10 +22,13 @@ namespace Drones
         // Constructeur
         public Drone(int x, int y, string name)
         {
+            this.Charge = RandomHelper.Next(0, ConfigY.MAX_LOAD); // La charge initiale de la batterie est choisie aléatoirement
+            this.Name = name;
             this.X = x;
             this.Y = y;
-            this._name = name;
-            Charge = RandomHelper.Next(0, ConfigY.MAX_LOAD); // La charge initiale de la batterie est choisie aléatoirement
+            _targetX = 1200;
+            _targetY = 700;
+
         }
     
         #region ================ Modelisation du drone et de son comportement ================
