@@ -16,14 +16,15 @@ namespace drone_simple
             Console.CursorVisible = false;
             Console.BackgroundColor = ConsoleColor.Yellow;
             Console.ForegroundColor = ConsoleColor.Red;
-
-            Drone[] drones =
+            
+            List<Drone> drones = new List<Drone>
             {
-                new Drone(50, 10, 5, 2),
-                new Drone(60, 0, 10, 2),
-                new Drone(30, 0, 15, 3),
-                new Drone(80, 30, 20, 1)
+                new Drone(40, 10, 5, 2),
+                new Drone(50, 0, 10, 2),
+                new Drone(20, 0, 15, 3)
             };
+
+            drones.Add(new Drone(70, 30, 20, 1));
 
             int batteryMax = drones.Max(d => d._battery);
 
