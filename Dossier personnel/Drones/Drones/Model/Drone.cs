@@ -12,7 +12,7 @@ namespace Drones
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
 
         public int Charge { get => _charge; private set => _charge = value; }
-        public string Name { get => _name; private set => value }
+        public string Name { get => _name; private set => _name = value; }
         public int X { get => _x; private set => _x = value; }
         public int Y { get => _y; private set => _y = value; }
 
@@ -23,7 +23,7 @@ namespace Drones
             this.X = x;
             this.Y = y;
             this._name = name;
-            Charge = Random._ra.Next(1000); // La charge initiale de la batterie est choisie aléatoirement
+            Charge = RandomHelper.Next(0, 1000); // La charge initiale de la batterie est choisie aléatoirement
         }
     
         #region ================ Modelisation du drone et de son comportement ================
@@ -35,7 +35,7 @@ namespace Drones
             if (Charge <= 0) return;                     // S'il n'a plus de charge, il ne peut plus bouger
             Random alea = new Random();
             X += 2;                                    // Il s'est déplacé de 2 pixels vers la droite
-            Y += alea.Next(-2, 3);                     // Il s'est déplacé d'une valeur aléatoire vers le haut ou le bas
+            Y += RandomHelper.Next(-2, 3);                     // Il s'est déplacé d'une valeur aléatoire vers le haut ou le bas
             Charge--;                                  // Il a dépensé de l'énergie
         }
 
