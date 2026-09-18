@@ -28,7 +28,6 @@ namespace Drones
             this.Y = y;
             _targetX = 1200;
             _targetY = 700;
-
         }
     
         #region ================ Modelisation du drone et de son comportement ================
