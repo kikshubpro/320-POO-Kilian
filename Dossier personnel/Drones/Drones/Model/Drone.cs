@@ -22,12 +22,12 @@ namespace Drones
         // Constructeur
         public Drone(int x, int y, string name)
         {
-            this.Charge = RandomHelper.Next(0, ConfigY.MAX_LOAD); // La charge initiale de la batterie est choisie aléatoirement
-            this.Name = name;
-            this.X = x;
-            this.Y = y;
-            _targetX = 1200;
-            _targetY = 700;
+            Charge = RandomHelper.Next(0, ConfigY.MAX_LOAD); // La charge initiale de la batterie est choisie aléatoirement
+            Name = name;
+            X = x;
+            Y = y;
+            _targetX = RandomHelper.Next(0, ConfigY.AIRSPACE_WIDTH);
+            _targetY = RandomHelper.Next(0, ConfigY.AIRSPACE_HEIGHT);
         }
     
         #region ================ Modelisation du drone et de son comportement ================
@@ -36,11 +36,14 @@ namespace Drones
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval)
         {
-            if (Charge <= 0) return;                     // S'il n'a plus de charge, il ne peut plus bouger
-            Random alea = new Random();
-            X += 2;                                    // Il s'est déplacé de 2 pixels vers la droite
-            Y += RandomHelper.Next(-2, 3);                     // Il s'est déplacé d'une valeur aléatoire vers le haut ou le bas
-            Charge--;                                  // Il a dépensé de l'énergie
+            if (Charge <= 0) return;                                        // S'il n'a plus de charge, il ne peut plus bouger
+            double deltaX = _targetX - X;
+            double deltaY = _targetY - Y;
+            double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+            double step = (double)ConfigY.SPEED * 10 * interval / 1000;          // Distance parcourue pendant l'intervalle,vitesse constante
+            X += (int)Math.Ceiling(deltaX / distance * step);
+            Y += (int)Math.Ceiling(deltaY / distance * step);                           // Il s'est déplacé en direction de son objectif
+            Charge--;                                                       // Il a dépensé de l'énergie
         }
 
         #endregion
