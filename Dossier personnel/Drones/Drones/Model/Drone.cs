@@ -36,7 +36,7 @@ namespace Drones
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval)
         {
-            if (Charge <= 0) return;                                        // S'il n'a plus de charge, il ne peut plus bouger
+            if (Charge <= 0 || (_targetX == X && _targetY == Y)) return;                                        // S'il n'a plus de charge, il ne peut plus bouger
             double deltaX = _targetX - X;
             double deltaY = _targetY - Y;
             double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
