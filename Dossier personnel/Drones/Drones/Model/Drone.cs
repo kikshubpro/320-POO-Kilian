@@ -12,12 +12,15 @@ namespace Drones
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
         private int _targetX;
         private int _targetY;
+        private State _state;
 
         public int Charge { get => _charge; private set => _charge = value; }
         public string Name { get => _name; private set => _name = value; }
         public int X { get => _x; private set => _x = value; }
         public int Y { get => _y; private set => _y = value; }
+        public State CurrentState { get => _state; private set => _state = value; }
 
+        public enum State { CRASH, LOW_BATTERY, LOADING, ROAMING };
 
         // Constructeur
         public Drone(int x, int y, string name)
@@ -28,6 +31,7 @@ namespace Drones
             Y = y;
             _targetX = RandomHelper.Next(0, ConfigY.AIRSPACE_WIDTH);
             _targetY = RandomHelper.Next(0, ConfigY.AIRSPACE_HEIGHT);
+            _state = State.ROAMING;
         }
     
         #region ================ Modelisation du drone et de son comportement ================
