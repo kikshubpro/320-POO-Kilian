@@ -50,13 +50,29 @@ namespace Drones
             Y += (int)(deltaY / distance * step);                           // Il s'est déplacé en direction de son objectif
             Charge--;                                                       // Il a dépensé de l'énergie
 
-            if (distance < step)
+            if (Charge < 200 && _state == State.ROAMING)
             {
-                if (_state == State.ROAMING)
-                {
-                    _targetX = RandomHelper.Next(0, ConfigY.AIRSPACE_WIDTH - SIZE / 2);
-                    _targetY = RandomHelper.Next(0, ConfigY.AIRSPACE_HEIGHT - SIZE / 2);
-                }
+                _state = State.LOW_BATTERY;
+            }
+
+            //if (_state == State.LOW_BATTERY)
+            //{
+            //    _targetX
+            //}
+
+            switch (_state)
+            {
+                case State.LOW_BATTERY:
+                    _targetX = AirSpace.WIDTH / 2;
+                    _targetY = AirSpace.HEIGHT / 2;
+                    break;
+                case State.ROAMING:
+                    if (distance < step)
+                    {
+                        _targetX = RandomHelper.Next(0, ConfigY.AIRSPACE_WIDTH - SIZE / 2);
+                        _targetY = RandomHelper.Next(0, ConfigY.AIRSPACE_HEIGHT - SIZE / 2);
+                    }
+                    break;
             }
         }
 
@@ -70,7 +86,7 @@ namespace Drones
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(Charge > 0 ? Resources.drone : Resources.boom, X-Drone.SIZE/2, Y - Drone.SIZE / 2, Drone.SIZE, Drone.SIZE);
+            drawingSpace.Graphics.DrawImage(Charge > 0 ? Resources.drone : Resources.boom, X - Drone.SIZE/2, Y - Drone.SIZE / 2, Drone.SIZE, Drone.SIZE);
             drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, X + 5, Y - 25);
         }
 
