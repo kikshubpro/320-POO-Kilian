@@ -40,14 +40,24 @@ namespace Drones
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval)
         {
-            if (Charge <= 0 || (_targetX == X && _targetY == Y)) return;                                        // S'il n'a plus de charge, il ne peut plus bouger
+            if (Charge <= 0) return;                                        // S'il n'a plus de charge, il ne peut plus bouger
+            
             double deltaX = _targetX - X;
             double deltaY = _targetY - Y;
             double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
-            double step = (double)ConfigY.SPEED * 10 * interval / 1000;          // Distance parcourue pendant l'intervalle,vitesse constante
-            X += (int)Math.Ceiling(deltaX / distance * step);
-            Y += (int)Math.Ceiling(deltaY / distance * step);                           // Il s'est déplacé en direction de son objectif
+            double step = (double)ConfigY.SPEED * interval / 300;          // Distance parcourue pendant l'intervalle,vitesse constante
+            X += (int)(deltaX / distance * step);
+            Y += (int)(deltaY / distance * step);                           // Il s'est déplacé en direction de son objectif
             Charge--;                                                       // Il a dépensé de l'énergie
+
+            if (distance < step)
+            {
+                if (_state == State.ROAMING)
+                {
+                    _targetX = RandomHelper.Next(0, ConfigY.AIRSPACE_WIDTH - SIZE / 2);
+                    _targetY = RandomHelper.Next(0, ConfigY.AIRSPACE_HEIGHT - SIZE / 2);
+                }
+            }
         }
 
         #endregion
